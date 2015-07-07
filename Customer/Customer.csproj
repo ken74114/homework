@@ -199,6 +199,9 @@
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>CustomerDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\v_rpt1.cs">
+      <DependentUpon>CustomerDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\客戶聯絡人.cs">
       <DependentUpon>CustomerDB.tt</DependentUpon>
     </Compile>
