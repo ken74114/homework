@@ -18,9 +18,9 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.客戶Id, "客戶Id", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.客戶Id,  new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("客戶Id", String.Empty)
+                @Html.DropDownList("客戶Id", string.Empty)
                 @Html.ValidationMessageFor(model => model.客戶Id)
             </div>
         </div>

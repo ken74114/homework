@@ -197,6 +197,9 @@
       <DependentUpon>CustomerDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Metadata\BankMD.cs" />
+    <Compile Include="Models\Metadata\ContactMD.cs" />
+    <Compile Include="Models\Metadata\CustomerMD.cs" />
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>CustomerDB.tt</DependentUpon>
     </Compile>
