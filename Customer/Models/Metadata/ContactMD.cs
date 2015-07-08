@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Customer.Attributes;
 
 namespace Customer.Models
 {
@@ -30,6 +31,7 @@ namespace Customer.Models
             public string Email { get; set; }
 
             [MaxLength(50, ErrorMessage = "不可超過50個字")]
+            [CellPhone(ErrorMessage="手機格式不正確")]
             public string 手機 { get; set; }
 
             [MaxLength(50, ErrorMessage = "不可超過50個字")]
