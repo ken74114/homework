@@ -176,6 +176,7 @@
     <Compile Include="Controllers\BanksController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -283,6 +284,7 @@
     <Content Include="Views\Banks\Details.cshtml" />
     <Content Include="Views\Banks\Edit.cshtml" />
     <Content Include="Views\Banks\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
