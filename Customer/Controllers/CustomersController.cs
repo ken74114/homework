@@ -17,7 +17,7 @@ namespace Customer.Controllers
         // GET: /Customers/
         public ActionResult Index()
         {
-            return View(db.客戶資料.ToList());
+            return View(db.客戶資料.Where(x=>!x.是否已刪除).ToList());
         }
 
         // GET: /Customers/Details/5
@@ -110,7 +110,7 @@ namespace Customer.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶資料 客戶資料 = db.客戶資料.Find(id);
-            db.客戶資料.Remove(客戶資料);
+            客戶資料.是否已刪除 = !客戶資料.是否已刪除;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

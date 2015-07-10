@@ -17,7 +17,8 @@ namespace Customer.Controllers
         // GET: /Contacts/
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+            var 客戶聯絡人 = db.客戶聯絡人.Where(x=>!x.是否已刪除).Include(客 => 客.客戶資料);
+            客戶聯絡人 = 客戶聯絡人.Where(x=>!x.客戶資料.是否已刪除);
             return View(客戶聯絡人.ToList());
         }
 
@@ -39,7 +40,7 @@ namespace Customer.Controllers
         // GET: /Contacts/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(x => !x.是否已刪除), "Id", "客戶名稱");
             return View();
         }
 
@@ -73,7 +74,7 @@ namespace Customer.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(x => !x.是否已刪除), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -115,7 +116,7 @@ namespace Customer.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            db.客戶聯絡人.Remove(客戶聯絡人);
+            客戶聯絡人.是否已刪除 = !客戶聯絡人.是否已刪除;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

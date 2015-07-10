@@ -17,7 +17,8 @@ namespace Customer.Controllers
         // GET: /Banks/
         public ActionResult Index()
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料);
+            var 客戶銀行資訊 = db.客戶銀行資訊.Where(x => !x.是否已刪除).Include(客 => 客.客戶資料);
+            客戶銀行資訊 = 客戶銀行資訊.Where(x => !x.客戶資料.是否已刪除);
             return View(客戶銀行資訊.ToList());
         }
 
@@ -39,7 +40,7 @@ namespace Customer.Controllers
         // GET: /Banks/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(x => !x.是否已刪除), "Id", "客戶名稱");
             return View();
         }
 
@@ -48,7 +49,7 @@ namespace Customer.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
+        public ActionResult Create([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +83,7 @@ namespace Customer.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
+        public ActionResult Edit([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +116,7 @@ namespace Customer.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
-            db.客戶銀行資訊.Remove(客戶銀行資訊);
+            客戶銀行資訊.是否已刪除 = !客戶銀行資訊.是否已刪除;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
