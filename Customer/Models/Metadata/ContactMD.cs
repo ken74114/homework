@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Customer.Attributes;
-using System.Web.Mvc;
 
 namespace Customer.Models
 {
@@ -29,7 +28,6 @@ namespace Customer.Models
             [Required(ErrorMessage = "Email不可為空")]
             [MaxLength(250, ErrorMessage = "不可超過250個字")]
             [DataType( System.ComponentModel.DataAnnotations.DataType.EmailAddress, ErrorMessage="請輸入正確的Email")]
-            [Remote("CheckEmail", "Validate", AdditionalFields = "客戶Id", ErrorMessage = "Email不可重複")]
             public string Email { get; set; }
 
             [MaxLength(50, ErrorMessage = "不可超過50個字")]

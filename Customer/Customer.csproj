@@ -178,7 +178,6 @@
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
-    <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -204,7 +203,6 @@
     <Compile Include="Models\Metadata\ContactMD.cs" />
     <Compile Include="Models\Metadata\CustomerMD.cs" />
     <Compile Include="Models\Repository\GenericRepository.cs" />
-    <Compile Include="Models\Repository\ValidateRepository.cs" />
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>CustomerDB.tt</DependentUpon>
     </Compile>
