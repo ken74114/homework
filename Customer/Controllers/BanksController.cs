@@ -14,7 +14,7 @@ namespace Customer.Controllers
 {
     public class BanksController : Controller
     {
-        //private CustomInfoEntities db = new CustomInfoEntities();
+
         private IRepository<客戶銀行資訊> bankRepository = new GenericRepository<客戶銀行資訊>();
         private IRepository<客戶資料> customerRepository = new GenericRepository<客戶資料>();
         // GET: /Banks/
