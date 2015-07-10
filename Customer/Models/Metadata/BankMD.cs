@@ -21,13 +21,11 @@ namespace Customer.Models
             public string 銀行名稱 { get; set; }
 
             [Required(ErrorMessage = "銀行代碼不可為空")]
-            [MinLength(3, ErrorMessage = "長度為3個字")]
-            [MaxLength(3, ErrorMessage = "長度為3個字")]
+            [StringLength(3, ErrorMessage = "長度為3個字", MinimumLength = 3)]
             public string 銀行代碼 { get; set; }
 
             [Required(ErrorMessage = "分行代碼不可為空")]
-            [MinLength(4, ErrorMessage = "長度為4個字")]
-            [MaxLength(4, ErrorMessage = "長度為4個字")]
+            [StringLength(4, ErrorMessage = "長度為4個字", MinimumLength = 4)]
             public string 分行代碼 { get; set; }
 
             [Required(ErrorMessage = "帳戶名稱不可為空")]

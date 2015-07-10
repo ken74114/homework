@@ -16,8 +16,7 @@ namespace Customer.Models
             public string 客戶名稱 { get; set; }
 
             [Required(ErrorMessage = "統一編號不可為空")]
-            [MaxLength(8, ErrorMessage = "長度為8個字")]
-            [MinLength(8, ErrorMessage = "長度為8個字")]
+            [StringLength(8, ErrorMessage = "長度為8個字", MinimumLength = 8)]
             public string 統一編號 { get; set; }
 
             [Required(ErrorMessage = "電話不可為空")]

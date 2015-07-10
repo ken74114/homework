@@ -7,19 +7,21 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Customer.Models;
+using Customer.Models.Interface;
+using Customer.Models.Repository;
 
 namespace Customer.Controllers
 {
     public class BanksController : Controller
     {
-        private CustomInfoEntities db = new CustomInfoEntities();
-
+        //private CustomInfoEntities db = new CustomInfoEntities();
+        private IRepository<客戶銀行資訊> bankRepository = new GenericRepository<客戶銀行資訊>();
+        private IRepository<客戶資料> customerRepository = new GenericRepository<客戶資料>();
         // GET: /Banks/
         public ActionResult Index()
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.Where(x => !x.是否已刪除).Include(客 => 客.客戶資料);
-            客戶銀行資訊 = 客戶銀行資訊.Where(x => !x.客戶資料.是否已刪除);
-            return View(客戶銀行資訊.ToList());
+            var 客戶銀行資訊 = this.bankRepository.GetAll(x => !x.是否已刪除 && !x.客戶資料.是否已刪除);
+            return View(客戶銀行資訊);
         }
 
         // GET: /Banks/Details/5
@@ -29,7 +31,7 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            客戶銀行資訊 客戶銀行資訊 = this.bankRepository.Get(id);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
@@ -40,7 +42,7 @@ namespace Customer.Controllers
         // GET: /Banks/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(x => !x.是否已刪除), "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱");
             return View();
         }
 
@@ -53,12 +55,10 @@ namespace Customer.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶銀行資訊.Add(客戶銀行資訊);
-                db.SaveChanges();
+                this.bankRepository.Create(客戶銀行資訊);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -69,12 +69,12 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            客戶銀行資訊 客戶銀行資訊 = this.bankRepository.Get(id);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -87,11 +87,10 @@ namespace Customer.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶銀行資訊).State = EntityState.Modified;
-                db.SaveChanges();
+                this.bankRepository.Update(客戶銀行資訊);
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -102,7 +101,7 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            客戶銀行資訊 客戶銀行資訊 = this.bankRepository.Get(id);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
@@ -115,9 +114,9 @@ namespace Customer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            客戶銀行資訊 客戶銀行資訊 = this.bankRepository.Get(id);
             客戶銀行資訊.是否已刪除 = !客戶銀行資訊.是否已刪除;
-            db.SaveChanges();
+            this.bankRepository.Delete(客戶銀行資訊);
             return RedirectToAction("Index");
         }
 
@@ -125,7 +124,8 @@ namespace Customer.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                this.customerRepository.Dispose();
+                this.bankRepository.Dispose();
             }
             base.Dispose(disposing);
         }

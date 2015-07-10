@@ -7,19 +7,22 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Customer.Models;
+using Customer.Models.Repository;
+using Customer.Models.Interface;
 
 namespace Customer.Controllers
 {
     public class ContactsController : Controller
     {
-        private CustomInfoEntities db = new CustomInfoEntities();
-
+        private IRepository<客戶聯絡人> contactRepository = new GenericRepository<客戶聯絡人>();
+        private IRepository<客戶資料> customerRepository = new GenericRepository<客戶資料>();
         // GET: /Contacts/
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Where(x=>!x.是否已刪除).Include(客 => 客.客戶資料);
-            客戶聯絡人 = 客戶聯絡人.Where(x=>!x.客戶資料.是否已刪除);
-            return View(客戶聯絡人.ToList());
+            var 客戶聯絡人 = this.contactRepository.GetAll(x => !x.是否已刪除 && !x.客戶資料.是否已刪除);
+            //db.客戶聯絡人.Where(x => !x.是否已刪除).Include(客 => 客.客戶資料);
+            //客戶聯絡人 = 客戶聯絡人.Where(x=>!x.客戶資料.是否已刪除);
+            return View(客戶聯絡人);
         }
 
         // GET: /Contacts/Details/5
@@ -29,7 +32,7 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = this.contactRepository.Get(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -40,7 +43,7 @@ namespace Customer.Controllers
         // GET: /Contacts/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(x => !x.是否已刪除), "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱");
             return View();
         }
 
@@ -49,16 +52,15 @@ namespace Customer.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
+                this.contactRepository.Create(客戶聯絡人);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -69,12 +71,12 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = this.contactRepository.Get(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(x => !x.是否已刪除), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -83,15 +85,14 @@ namespace Customer.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        public ActionResult Edit([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶聯絡人).State = EntityState.Modified;
-                db.SaveChanges();
+                this.contactRepository.Update(客戶聯絡人);
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(this.customerRepository.GetAll(x => !x.是否已刪除), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -102,7 +103,7 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = this.contactRepository.Get(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -115,9 +116,9 @@ namespace Customer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = this.contactRepository.Get(id);
             客戶聯絡人.是否已刪除 = !客戶聯絡人.是否已刪除;
-            db.SaveChanges();
+            this.contactRepository.Delete(客戶聯絡人);
             return RedirectToAction("Index");
         }
 
@@ -125,7 +126,7 @@ namespace Customer.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                contactRepository.Dispose();
             }
             base.Dispose(disposing);
         }

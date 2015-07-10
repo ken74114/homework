@@ -31,7 +31,8 @@ namespace Customer.Models
             public string Email { get; set; }
 
             [MaxLength(50, ErrorMessage = "不可超過50個字")]
-            [CellPhone(ErrorMessage="手機格式不正確")]
+            //[CellPhone(ErrorMessage="手機格式不正確")]
+            [RegularExpression(@"\d{4}-\d{6}", ErrorMessage = "手機格式不正確")]
             public string 手機 { get; set; }
 
             [MaxLength(50, ErrorMessage = "不可超過50個字")]
