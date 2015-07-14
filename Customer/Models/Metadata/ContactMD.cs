@@ -18,6 +18,8 @@ namespace Customer.Models
             [Required(ErrorMessage="請選擇客戶")]
             public int 客戶Id { get; set; }
 
+            public int Id { get; set; }
+
             [Required(ErrorMessage="職稱不可為空")]
             [MaxLength(50, ErrorMessage="不可超過50個字")]
             public string 職稱 { get; set; }
@@ -29,7 +31,7 @@ namespace Customer.Models
             [Required(ErrorMessage = "Email不可為空")]
             [MaxLength(250, ErrorMessage = "不可超過250個字")]
             [DataType( System.ComponentModel.DataAnnotations.DataType.EmailAddress, ErrorMessage="請輸入正確的Email")]
-            [Remote("CheckEmail", "Validate", AdditionalFields = "客戶Id", ErrorMessage = "Email不可重複")]
+            [Remote("CheckEmail", "Validate", AdditionalFields = "客戶Id,Id", ErrorMessage = "Email不可重複")]
             public string Email { get; set; }
 
             [MaxLength(50, ErrorMessage = "不可超過50個字")]

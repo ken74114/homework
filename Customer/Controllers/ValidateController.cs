@@ -1,5 +1,4 @@
 ﻿using Customer.Models;
-using Customer.Models.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +9,11 @@ namespace Customer.Controllers
 {
     public class ValidateController : Controller
     {
-        private ValidateRepository<客戶聯絡人> contactRepository = new ValidateRepository<客戶聯絡人>();
-        public JsonResult CheckEmail(string email, int 客戶Id)
+        private 客戶聯絡人Repository contactRepository = RepositoryHelper.Get客戶聯絡人Repository();
+        public JsonResult CheckEmail(string email, int 客戶Id, int id=0)
         {
             bool isValidate = false;
-            isValidate = this.contactRepository.IsRepeatForEmail(x => x.客戶Id == 客戶Id && x.Email.Equals(email));
+            isValidate = this.contactRepository.IsRepeatForEmail(客戶Id, email, id);
             return Json(!isValidate, JsonRequestBehavior.AllowGet);
         }
 
@@ -22,7 +21,7 @@ namespace Customer.Controllers
         {
             if (disposing)
             {
-                this.contactRepository.Dispose();
+                this.contactRepository.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }

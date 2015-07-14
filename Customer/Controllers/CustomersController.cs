@@ -7,18 +7,16 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Customer.Models;
-using Customer.Models.Repository;
-using Customer.Models.Interface;
 
 namespace Customer.Controllers
 {
     public class CustomersController : Controller
     {
-        private IRepository<客戶資料> customerRepository = new GenericRepository<客戶資料>();
+        private 客戶資料Repository customerRepository = RepositoryHelper.Get客戶資料Repository();
         // GET: /Customers/
         public ActionResult Index()
         {
-            return View(this.customerRepository.GetAll(x => !x.是否已刪除));
+            return View(this.customerRepository.All());
         }
 
         // GET: /Customers/Details/5
@@ -28,7 +26,7 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = this.customerRepository.Get(id);
+            客戶資料 客戶資料 = this.customerRepository.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -51,7 +49,8 @@ namespace Customer.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.customerRepository.Create(客戶資料);
+                this.customerRepository.Add(客戶資料);
+                this.customerRepository.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +64,7 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = this.customerRepository.Get(id);
+            客戶資料 客戶資料 = this.customerRepository.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -82,7 +81,8 @@ namespace Customer.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.customerRepository.Update(客戶資料);
+                this.customerRepository.UnitOfWork.Context.Entry(客戶資料).State = EntityState.Modified;
+                this.customerRepository.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(客戶資料);
@@ -95,7 +95,7 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = this.customerRepository.Get(id);
+            客戶資料 客戶資料 = this.customerRepository.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -106,11 +106,12 @@ namespace Customer.Controllers
         // POST: /Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? id)
         {
-            客戶資料 客戶資料 = this.customerRepository.Get(id);
-            客戶資料.是否已刪除 = !客戶資料.是否已刪除;
+            客戶資料 客戶資料 = this.customerRepository.Find(id.Value);
+            
             this.customerRepository.Delete(客戶資料);
+            this.customerRepository.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -118,7 +119,7 @@ namespace Customer.Controllers
         {
             if (disposing)
             {
-                customerRepository.Dispose();
+                this.customerRepository.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }
