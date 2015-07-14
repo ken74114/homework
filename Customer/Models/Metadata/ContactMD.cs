@@ -10,8 +10,17 @@ using System.Web.Mvc;
 namespace Customer.Models
 {
     [MetadataType(typeof(ContactMD))]
-    public partial class 客戶聯絡人
+    public partial class 客戶聯絡人 : IValidatableObject
     {
+        private 客戶聯絡人Repository contactRepository = RepositoryHelper.Get客戶聯絡人Repository();
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            bool isValidate = false;
+            isValidate = this.contactRepository.IsRepeatForEmail(客戶Id, this.Email, this.Id);
+            if (isValidate)
+                yield return new ValidationResult("Email不可重複", new[] { "Email" });
+        }
+
         public class ContactMD
         {
             [DisplayName("客戶")]
@@ -31,7 +40,7 @@ namespace Customer.Models
             [Required(ErrorMessage = "Email不可為空")]
             [MaxLength(250, ErrorMessage = "不可超過250個字")]
             [DataType( System.ComponentModel.DataAnnotations.DataType.EmailAddress, ErrorMessage="請輸入正確的Email")]
-            [Remote("CheckEmail", "Validate", AdditionalFields = "客戶Id,Id", ErrorMessage = "Email不可重複")]
+            //[Remote("CheckEmail", "Validate", AdditionalFields = "客戶Id,Id", ErrorMessage = "Email不可重複")]
             public string Email { get; set; }
 
             [MaxLength(50, ErrorMessage = "不可超過50個字")]
@@ -42,5 +51,7 @@ namespace Customer.Models
             [MaxLength(50, ErrorMessage = "不可超過50個字")]
             public string 電話 { get; set; }
         }
+
+       
     }
 }
