@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Customer.Models.客戶銀行資訊>
+﻿@model Customer.Models.ViewModel.BankViewModel
 
 @{
     ViewBag.Title = "客戶銀行列表";
@@ -12,27 +12,27 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.銀行名稱)
+            @Html.DisplayNameFor(model => model.Banks.First().銀行名稱)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.銀行代碼)
+            @Html.DisplayNameFor(model => model.Banks.First().銀行代碼)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.分行代碼)
+            @Html.DisplayNameFor(model => model.Banks.First().分行代碼)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.帳戶名稱)
+            @Html.DisplayNameFor(model => model.Banks.First().帳戶名稱)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.帳戶號碼)
+            @Html.DisplayNameFor(model => model.Banks.First().帳戶號碼)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
+            @Html.DisplayNameFor(model => model.Banks.First().客戶資料.客戶名稱)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Banks) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.銀行名稱)
@@ -61,3 +61,6 @@
 }
 
 </table>
+<div class="pager">
+    @Html.PagedListPager(Model.Banks, PageIndex => Url.Action("Index", new { PageIndex }))
+</div>

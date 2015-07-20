@@ -1,4 +1,5 @@
 ﻿using Customer.Models;
+using Customer.Models.ViewModel;
 using System.Net;
 using System.Web.Mvc;
 
@@ -8,11 +9,12 @@ namespace Customer.Controllers
     {
         private 客戶聯絡人Repository contactRepository = RepositoryHelper.Get客戶聯絡人Repository();
         private 客戶資料Repository customerRepository = RepositoryHelper.Get客戶資料Repository();
+        private int pageNum = 10;
         // GET: /Contacts/
-        public ActionResult Index()
+        public ActionResult Index(ContactViewModel model)
         {
-            var 客戶聯絡人 = this.contactRepository.All();
-            return View(客戶聯絡人);
+            model.Contacts = this.contactRepository.PagedToList(model.PageIndex, pageNum);
+            return View(model);
         }
 
         // GET: /Contacts/Details/5

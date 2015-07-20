@@ -22,6 +22,11 @@ namespace Customer.Models
             this.UnitOfWork.Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
         }
 
+        public override IOrderedQueryable<客戶聯絡人> Order()
+        {
+            return this.All().OrderBy(x => x.Id);
+        }
+
         public bool IsRepeatForEmail(int 客戶Id, string email, int id)
         {
             客戶聯絡人 data= base.All().Where(x => x.客戶Id == 客戶Id && x.Email.Equals(email)).FirstOrDefault() ;

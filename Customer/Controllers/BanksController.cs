@@ -7,19 +7,20 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Customer.Models;
+using Customer.Models.ViewModel;
 
 namespace Customer.Controllers
 {
     public class BanksController : Controller
     {
-
         private 客戶銀行資訊Repository bankRepository = RepositoryHelper.Get客戶銀行資訊Repository();
         private 客戶資料Repository customerRepository = RepositoryHelper.Get客戶資料Repository();
+        private int pageNum = 10;
         // GET: /Banks/
-        public ActionResult Index()
+        public ActionResult Index(BankViewModel model)
         {
-            var 客戶銀行資訊 = this.bankRepository.All();
-            return View(客戶銀行資訊);
+            model.Banks = this.bankRepository.PagedToList(model.PageIndex, pageNum);
+            return View(model);
         }
 
         // GET: /Banks/Details/5

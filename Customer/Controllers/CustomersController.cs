@@ -7,16 +7,19 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Customer.Models;
+using Customer.Models.ViewModel;
 
 namespace Customer.Controllers
 {
     public class CustomersController : Controller
     {
         private 客戶資料Repository customerRepository = RepositoryHelper.Get客戶資料Repository();
+        private int pageNum = 10;
         // GET: /Customers/
-        public ActionResult Index()
+        public ActionResult Index(CustomerViewModel model)
         {
-            return View(this.customerRepository.All());
+            model.Customers = this.customerRepository.PagedToList(model.PageIndex, pageNum);
+            return View(model);
         }
 
         // GET: /Customers/Details/5
@@ -45,7 +48,7 @@ namespace Customer.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +80,7 @@ namespace Customer.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +112,7 @@ namespace Customer.Controllers
         public ActionResult DeleteConfirmed(int? id)
         {
             客戶資料 客戶資料 = this.customerRepository.Find(id.Value);
-            
+
             this.customerRepository.Delete(客戶資料);
             this.customerRepository.UnitOfWork.Commit();
             return RedirectToAction("Index");

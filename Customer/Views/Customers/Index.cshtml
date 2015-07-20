@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Customer.Models.客戶資料>
+﻿@model Customer.Models.ViewModel.CustomerViewModel
 
 @{
     ViewBag.Title = "客戶列表";
@@ -12,27 +12,27 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.客戶名稱)
+            @Html.DisplayNameFor(model => model.Customers.First().客戶名稱)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.統一編號)
+            @Html.DisplayNameFor(model => model.Customers.First().統一編號)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.電話)
+            @Html.DisplayNameFor(model => model.Customers.First().電話)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.傳真)
+            @Html.DisplayNameFor(model => model.Customers.First().傳真)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.地址)
+            @Html.DisplayNameFor(model => model.Customers.First().地址)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Customers.First().Email)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Customers) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.客戶名稱)
@@ -61,3 +61,6 @@
 }
 
 </table>
+<div class="pager">
+    @Html.PagedListPager(Model.Customers, PageIndex => Url.Action("Index", new { PageIndex }))
+</div>

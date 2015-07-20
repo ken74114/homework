@@ -21,6 +21,11 @@ namespace Customer.Models
             entity.是否已刪除 = !entity.是否已刪除;
             this.UnitOfWork.Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
         }
+
+        public override IOrderedQueryable<客戶銀行資訊> Order()
+        {
+            return this.All().OrderBy(x => x.Id);
+        }
     }
 
     public interface I客戶銀行資訊Repository : IRepository<客戶銀行資訊>

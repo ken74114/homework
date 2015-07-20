@@ -1,10 +1,9 @@
 ﻿
 
+using PagedList;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Customer.Models
 { 
@@ -15,8 +14,12 @@ namespace Customer.Models
 		IQueryable<T> Where(Expression<Func<T, bool>> expression);
 		void Add(T entity);
 		void Delete(T entity);
-
+        
         T Find(int id);
+
+        IPagedList<T> PagedToList(int pageIndex, int pageNum);
+
+        IOrderedQueryable<T> Order();
     }
 }
 

@@ -40,6 +40,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -175,6 +181,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\CellPhoneAttribute.cs" />
     <Compile Include="Controllers\BanksController.cs" />
+    <Compile Include="Models\ViewModel\BankViewModel.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -228,6 +235,8 @@
     <Compile Include="Models\sysdiagramsRepository.cs">
       <DependentUpon>IRepository.EF6.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModel\ContactViewModel.cs" />
+    <Compile Include="Models\ViewModel\CustomerViewModel.cs" />
     <Compile Include="Models\v_rpt1.cs">
       <DependentUpon>CustomerDB.tt</DependentUpon>
     </Compile>
@@ -262,6 +271,7 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -309,7 +319,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
