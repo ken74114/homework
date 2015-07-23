@@ -9,58 +9,74 @@
 <p>
     @Html.ActionLink("新增", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Banks.First().銀行名稱)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Banks.First().銀行代碼)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Banks.First().分行代碼)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Banks.First().帳戶名稱)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Banks.First().帳戶號碼)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Banks.First().客戶資料.客戶名稱)
-        </th>
-        <th></th>
-    </tr>
+@using (Html.BeginForm("Update", "Banks", new { Model.PageIndex }, FormMethod.Post))
+{
+    <div class="form-group">
+        <div class="col-md-2 col-centered text-center">
+            <input type="submit" value="批次更新" class="btn btn-default" />
+        </div>
+    </div>
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Banks.First().銀行名稱)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Banks.First().銀行代碼)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Banks.First().分行代碼)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Banks.First().帳戶名稱)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Banks.First().帳戶號碼)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Banks.First().客戶資料.客戶名稱)
+            </th>
+            <th></th>
+        </tr>
+        @for (int i = 0; i < Model.Banks.Count; i++)
+        {
+            var item = Model.Banks[i];
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(modelItem => Model.Banks[i].IsDelete)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => Model.Banks[i].銀行名稱)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => Model.Banks[i].銀行代碼)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => Model.Banks[i].分行代碼)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => Model.Banks[i].帳戶名稱)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => Model.Banks[i].帳戶號碼)
+                </td>
+                <td>
+                    @Html.DropDownListFor(modelItem => Model.Banks[i].客戶Id, new SelectList(Model.Customers, "Id", "客戶名稱", Model.Banks[i].客戶Id))
+                </td>
+                <td>
+                    @Html.HiddenFor(modelItem => Model.Banks[i].Id)
+                    @Html.ActionLink("編輯", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("詳細資訊", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("刪除", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model.Banks) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.銀行名稱)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.銀行代碼)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.分行代碼)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.帳戶名稱)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.帳戶號碼)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.客戶資料.客戶名稱)
-        </td>
-        <td>
-            @Html.ActionLink("編輯", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("詳細資訊", "Details", new { id = item.Id }) |
-            @Html.ActionLink("刪除", "Delete", new { id = item.Id })
-        </td>
-    </tr>
+    </table>
 }
-
-</table>
 <div class="pager">
     @Html.PagedListPager(Model.Banks, PageIndex => Url.Action("Index", new { PageIndex }))
 </div>
+
+}

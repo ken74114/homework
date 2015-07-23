@@ -91,6 +91,35 @@ namespace Customer.Controllers
             return View(客戶資料);
         }
 
+        [HttpPost]
+        public ActionResult Update(客戶資料[] Customers, int PageIndex)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (客戶資料 data in Customers)
+                {
+                    if (!data.IsDelete)
+                    {
+                        data.IsDelete = false;
+                    }
+                    else
+                    {
+                        data.是否已刪除 = !data.是否已刪除;
+                    }
+                    this.customerRepository.UnitOfWork.Context.Entry(data).State = EntityState.Modified;
+                }
+                this.customerRepository.UnitOfWork.Commit();
+                return RedirectToAction("Index", new { PageIndex });
+            }
+            else
+            {
+                CustomerViewModel model = new CustomerViewModel();
+                model.PageIndex = PageIndex;
+                model.Customers = this.customerRepository.PagedToList(PageIndex, pageNum);
+                return View("Index", model);
+            }
+        }
+
         // GET: /Customers/Delete/5
         public ActionResult Delete(int? id)
         {

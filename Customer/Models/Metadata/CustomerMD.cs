@@ -9,6 +9,7 @@ namespace Customer.Models
     [MetadataType(typeof(CustomerMD))]
     public partial class 客戶資料
     {
+        public bool IsDelete { get; set; }
         public class CustomerMD
         {
             [Required(ErrorMessage = "客戶名稱不可為空")]

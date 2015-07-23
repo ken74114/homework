@@ -10,6 +10,8 @@ namespace Customer.Models
     [MetadataType(typeof(BankMD))]
     public partial class 客戶銀行資訊
     {
+        public bool IsDelete { get; set; }
+       
         public class BankMD
         {
             [DisplayName("客戶")]

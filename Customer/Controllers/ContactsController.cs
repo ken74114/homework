@@ -1,5 +1,6 @@
 ﻿using Customer.Models;
 using Customer.Models.ViewModel;
+using System.Data.Entity;
 using System.Net;
 using System.Web.Mvc;
 
@@ -14,6 +15,7 @@ namespace Customer.Controllers
         public ActionResult Index(ContactViewModel model)
         {
             model.Contacts = this.contactRepository.PagedToList(model.PageIndex, pageNum);
+            model.Customers = this.customerRepository.All();
             return View(model);
         }
 
@@ -90,6 +92,35 @@ namespace Customer.Controllers
             return View(客戶聯絡人);
         }
 
+        [HttpPost]
+        public ActionResult Update(客戶聯絡人[] Contacts, int PageIndex)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (客戶聯絡人 data in Contacts)
+                {
+                    if (!data.IsDelete)
+                    {
+                        data.IsDelete = false;
+                        }
+                    else
+                    {
+                        data.是否已刪除 = !data.是否已刪除;
+                    }
+                    this.contactRepository.UnitOfWork.Context.Entry(data).State = EntityState.Modified;
+                }
+                this.contactRepository.UnitOfWork.Commit();
+                return RedirectToAction("Index", new { PageIndex });
+            }
+            else
+            {
+                ContactViewModel model = new ContactViewModel();
+                model.PageIndex = PageIndex;
+                model.Contacts = this.contactRepository.PagedToList(PageIndex, pageNum);
+                model.Customers = this.customerRepository.All();
+                return View("Index", model);
+            }
+        }
         // GET: /Contacts/Delete/5
         public ActionResult Delete(int? id)
         {

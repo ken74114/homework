@@ -20,6 +20,7 @@ namespace Customer.Controllers
         public ActionResult Index(BankViewModel model)
         {
             model.Banks = this.bankRepository.PagedToList(model.PageIndex, pageNum);
+            model.Customers = this.customerRepository.All();
             return View(model);
         }
 
@@ -94,6 +95,36 @@ namespace Customer.Controllers
             }
             ViewBag.客戶Id = new SelectList(this.customerRepository.All(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
+        }
+
+        [HttpPost]
+        public ActionResult Update(客戶銀行資訊[] Banks, int PageIndex)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (客戶銀行資訊 data in Banks)
+                {
+                    if (!data.IsDelete)
+                    {
+                        data.IsDelete = false;
+                    }
+                    else
+                    {
+                        data.是否已刪除 = !data.是否已刪除;
+                    }
+                    this.bankRepository.UnitOfWork.Context.Entry(data).State = EntityState.Modified;
+                }
+                this.bankRepository.UnitOfWork.Commit();
+                return RedirectToAction("Index", new { PageIndex });
+            }
+            else
+            {
+                BankViewModel model = new BankViewModel();
+                model.PageIndex = PageIndex;
+                model.Banks = this.bankRepository.PagedToList(PageIndex, pageNum);
+                model.Customers = this.customerRepository.All();
+                return View("Index", model);
+            }
         }
 
         // GET: /Banks/Delete/5

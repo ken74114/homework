@@ -13,6 +13,7 @@ namespace Customer.Models
     public partial class 客戶聯絡人 : IValidatableObject
     {
         private 客戶聯絡人Repository contactRepository = RepositoryHelper.Get客戶聯絡人Repository();
+        public bool IsDelete { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             bool isValidate = false;
