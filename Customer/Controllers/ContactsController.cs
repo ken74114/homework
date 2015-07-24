@@ -1,4 +1,5 @@
-﻿using Customer.Models;
+﻿using Customer.ActionFilters;
+using Customer.Models;
 using Customer.Models.ViewModel;
 using System.Data.Entity;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Customer.Controllers
 {
+    [Shared]
     public class ContactsController : Controller
     {
         private 客戶聯絡人Repository contactRepository = RepositoryHelper.Get客戶聯絡人Repository();

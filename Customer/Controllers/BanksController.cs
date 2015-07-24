@@ -8,9 +8,11 @@ using System.Web;
 using System.Web.Mvc;
 using Customer.Models;
 using Customer.Models.ViewModel;
+using Customer.ActionFilters;
 
 namespace Customer.Controllers
 {
+    [Shared]
     public class BanksController : Controller
     {
         private 客戶銀行資訊Repository bankRepository = RepositoryHelper.Get客戶銀行資訊Repository();

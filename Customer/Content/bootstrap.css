@@ -3883,7 +3883,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   color: #555555;
   cursor: default;
   background-color: #ffffff;
-  border: 1px solid #dddddd;
+  /*border: 1px solid #dddddd;*/
   border-bottom-color: transparent;
 }
 
@@ -4025,9 +4025,9 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar {
   position: relative;
   z-index: 1000;
-  min-height: 50px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
+  /*min-height: 50px;*/
+  /*margin-bottom: 20px;*/
+  /*border: 1px solid transparent;*/
 }
 
 .navbar:before,

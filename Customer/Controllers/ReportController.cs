@@ -1,4 +1,5 @@
-﻿using Customer.Models;
+﻿using Customer.ActionFilters;
+using Customer.Models;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Customer.Controllers
 {
+    [Shared]
     public class ReportController : Controller
     {
         private v_rpt1Repository rptRepository = RepositoryHelper.Getv_rpt1Repository();
